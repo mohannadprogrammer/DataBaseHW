@@ -7,6 +7,12 @@ struct student {
     char name[10];
     char dep[10];
 };
+int getPostion(struct student );
+void insert (struct student);
+void display (void);
+int search (int );
+void delet (int );
+
 
 //prototypes 
 void meragSort (char *);
@@ -14,15 +20,12 @@ int cutFile(char *);
 
 int main ()
 {
+	struct student s={1,"mohannah","sw"};
+s.id =putint();
+insert (s);
+	return 0;}
 
-	char * m ="mojhh"; 
-	char * n= "lkjghhjj"+m;
-	printf(n);
-	return 0;
-}
-
-int cutFile (char *file )
-{
+int cutFile (char *file ){
 
 	FILE * read ;
 	read =fopen (file,"rd");
@@ -32,10 +35,17 @@ int cutFile (char *file )
 	while ((p=fread(&st ,sizeof(struct student ),1,read))>0){
 		for (int i=0;i<3&& p>0;i++){
 		FILE * write ;
-		write =fopen ();
+//		write =fopen ();
 
 		}
 	num_file++;
 	}
 	return num_file ;
+}
+void insert (struct student newStudent ){
+     FILE *write ;
+     write=fopen("data.txt","ab");
+     fwrite(&newStudent,sizeof(struct student),1,write);
+     fclose(write);
+     printf("these id is exist !!\n ");
 }
