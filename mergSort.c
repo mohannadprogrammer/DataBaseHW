@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 //student struct 
 
 struct student {
@@ -24,19 +25,8 @@ void internal_sort(char *);
 void mergFile(char *, char *,int);
 int main ()
 {
-	//struct student s ={33,"sdf","sdf"};
-	//insert(s);
-	//int n =cutFile("data.txt");
-	//printf(" %d \n",n);
-	/*display();
-	printf ("\n \n \n ");
-	displayl("A.txt");
-	printf ("\n \n \n ");
-	displayl("B.txt");
-	printf ("\n \n \n ");
-	displayl("C.txt");
-	printf ("\n \n \n ");
-	displayl("D.txt");*/
+	mergSort("data.txt");
+
 }
 void internal_sort(char * file ){
 	struct student s[3]={0,"",""};
@@ -58,14 +48,15 @@ void internal_sort(char * file ){
 		}
 	}
 	for (int i =0;i<3;i++){
-		if (s[i].id != 0)
+		if (s[i].id !=0)
 			fwrite (&s[i],sizeof(struct student ),1,write);
 	}
 	fclose(write);
 }
 void mergSort (char * file){
 	int num_file =cutFile(file);
-
+	merg(num_file);
+	printf("skdflsd");
 }
 int cutFile (char *file ){
 
@@ -93,16 +84,33 @@ int cutFile (char *file ){
 	return num_file ;
 }
 void merg(int num_file){
-	int i =0;
-	while (num_file>0){
-		char file1[]="0.txt";
-		char file2[]="0.txt";
-		file1[0]=(char)i+65;
-		file2[0]=(char)i+66;
-		//mergFile(file1,file2);
-		i++;
-	}
+	int i =num_file;
+	int h =0;
 	
+	while (num_file > 1){
+		h=0;
+		for ( int k=0; k <= num_file/2;){		
+			char file1[]="0.txt";
+			char file2[]="0.txt";
+			file1[0]=(char)k+65;
+			file2[0]=(char)k+66;
+			mergFile(file1,file2,h);
+			k=k+2;	
+			h++;
+		}
+		if (num_file % 2==0){
+			num_file=num_file/2;
+		}else{
+			num_file=(num_file/2)+1;
+			char file1[]="0.txt";
+			char file2[]="0.txt";
+			file2[0]=(char)num_file+65;
+			file1[0]=(char)i+66;
+			rename(file1,file2);
+			i=num_file;
+		}
+	}
+	rename("A.txt","data2.txt");
 }
 void mergFile (char * file1 , char * file2 , int merg_num){
 	FILE * p1 ;
@@ -133,17 +141,22 @@ void mergFile (char * file1 , char * file2 , int merg_num){
 		fwrite(&st1,sizeof(struct student ),1,write);
 		c1=fread(&st1,sizeof(struct student ),1,p1);
 	}
-	while (c1 >0 ){
-		fwrite(&st1,sizeof(struct student ),1,write);
-		c1=fread(&st1,sizeof(struct student ),1,p1);
+	while (c2 >0 ){
+		fwrite(&st2,sizeof(struct student ),1,write);
+		c2=fread(&st2,sizeof(struct student ),1,p2);
 	}
+	fclose(write);
+	fclose(p2);
+	fclose(p1);
+	char del1 [] ="rm ";
+	strcat(del1,file1);
+    	char del2[]="rm ";
+ 	strcat(del2,file2);
+    	system(del1);
+	system(del2);
 	char temp[]="0.txt";
 	temp[0]=(char)merg_num+65;
-	char temp2[]="rm temp.txt 12345";
-	for (int i=0;i<5;i++){
-		temp[i]=temp2[i+13];
-	}
-	system(temp2);
+	rename("temp.txt",temp);
 }
 void insert (struct student newStudent ){
      FILE *write ;
